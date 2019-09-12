@@ -9,8 +9,9 @@ red = Vector3(255, 0, 0)
 
 
 class Particle:
-    def __init__(self, screen, pos=Vector3(0, 0, 0), vel=Vector3(0, 0, 0), col=white):
+    def __init__(self, screen, fire, pos=Vector3(0, 0, 0), vel=Vector3(0, 0, 0), col=white):
         self.screen = screen
+        self.firework = fire
         self.pos = pos
         self.vel = vel
         self.acc = Vector3(0, 0, 0)
@@ -30,13 +31,14 @@ class Particle:
         return False
 
     def update(self):
+        if not self.firework:
+            self.vel *= 0.85
         self.vel += self.acc
         self.pos += self.vel
         self.acc *= 0
 
     def draw(self, color):
         if color != white:
-            pygame.draw.circle(self.screen, (color[0], color[1], color[2], self.transparency), (int(self.pos[0]), int(self.pos[1])), 6)
+            pygame.draw.circle(self.screen, (color[0], color[1], color[2], self.transparency), (int(self.pos[0]), int(self.pos[1])), 1)
         else:
-            # print  (self.col[0], self.col[1], self.col[2], self.transparency)
-            pygame.draw.circle(self.screen, (self.col[0], self.col[1], self.col[2], self.transparency), (int(self.pos[0]), int(self.pos[1])), 3)
+            pygame.draw.circle(self.screen, (self.col[0], self.col[1], self.col[2], self.transparency), (int(self.pos[0]), int(self.pos[1])), 1)

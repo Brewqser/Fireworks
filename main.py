@@ -8,7 +8,7 @@ from firework import Firework
 pygame.init()
 width, height = 1600, 800
 cx, cy = width // 2, height // 2
-screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((width, height), flags=pygame.SRCALPHA, depth=32)
 clock = pygame.time.Clock()
 
 white = Vector3(255, 255, 255)
@@ -40,13 +40,20 @@ while True:
         tps_dt -= 1 / tps
         for i in range(len(fireworks)-1, -1, -1):
             fireworks[i].update()
+            if fireworks[i].is_done():
+                fireworks.pop(i)
         if random() < 0.05:
             fireworks.append(Firework(screen, width, height, gravity))
 
     # Draw
-    screen.fill(black)
+    # list(black) + [25]
+        print(screen.get_flags())
+        scr = screen.copy()
+        scr.set_alpha(240)
 
-    for f in fireworks:
-        f.draw()
+        screen.fill(list(black) + [25])
+        screen.blit(scr, (0, 0))
+        for f in fireworks:
+            f.draw()
 
-    pygame.display.flip()
+        pygame.display.flip()
