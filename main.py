@@ -3,7 +3,7 @@ import sys
 import math
 from random import random, randint
 from pygame import Vector3
-from particle import Particle
+from firework import Firework
 
 pygame.init()
 width, height = 1600, 800
@@ -38,11 +38,10 @@ while True:
     tps_dt += dt
     while tps_dt > 1 / tps:
         tps_dt -= 1 / tps
-        for f in fireworks:
-            f.add_force(gravity)
-            f.update()
+        for i in range(len(fireworks)-1, -1, -1):
+            fireworks[i].update()
         if random() < 0.05:
-            fireworks.append(Particle(screen, Vector3(randint(0, width), height, 0), Vector3(0, randint(-16, -10), 0)))
+            fireworks.append(Firework(screen, width, height, gravity))
 
     # Draw
     screen.fill(black)

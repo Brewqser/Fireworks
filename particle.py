@@ -15,14 +15,28 @@ class Particle:
         self.vel = vel
         self.acc = Vector3(0, 0, 0)
         self.col = col
+        self.transparency = 255
 
     def add_force(self, force):
         self.vel += force
+
+    def is_dead(self):
+        return self.vel[1] > 0
+
+    def update_transparency(self, t):
+        self.transparency -= t
+        if self.transparency < 0:
+            return True
+        return False
 
     def update(self):
         self.vel += self.acc
         self.pos += self.vel
         self.acc *= 0
 
-    def draw(self):
-        pygame.draw.circle(self.screen, self.col, (int(self.pos[0]), int(self.pos[1])), 6)
+    def draw(self, color):
+        if color != white:
+            pygame.draw.circle(self.screen, (color[0], color[1], color[2], self.transparency), (int(self.pos[0]), int(self.pos[1])), 6)
+        else:
+            # print  (self.col[0], self.col[1], self.col[2], self.transparency)
+            pygame.draw.circle(self.screen, (self.col[0], self.col[1], self.col[2], self.transparency), (int(self.pos[0]), int(self.pos[1])), 3)
